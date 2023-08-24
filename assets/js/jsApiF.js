@@ -19,13 +19,14 @@ const getUsersList = async () => {
     try{
         const dataLocalStorage = localStorage.getItem("userData"); 
         const dataLocalObj = JSON.parse(dataLocalStorage); 
-        const currentTime = Date.now();
+        
+        
+        if(dataLocalObj){
+            const currentTime = Date.now();
         const differenceInTime = currentTime - dataLocalObj.timeLimit; 
         const differenceInSec = differenceInTime / 1000;    
         const differenceInMin = differenceInSec / 60;
 
-        
-        if(dataLocalObj){
             if(differenceInMin>1){
                 const response = await fetch(urlApiUsers);
                 const responseJson = await response.json();
