@@ -1,5 +1,5 @@
 
-const update = document.getElementById("refreshButton"); //boton llama a la funcion
+const update = document.getElementById("refreshButton");
 
 update.addEventListener("click", () => {
     getUsersList();
@@ -8,11 +8,10 @@ update.addEventListener("click", () => {
 
 
 const saveLocalStorage = (key, value) => {
-    const timeLimit = Date.now() + 1000;
+    const timeLimit = Date.now(); 
     const dataNow = { value, timeLimit};
     localStorage.setItem(key, JSON.stringify(dataNow)   );
 };
-
 
 
 
@@ -20,10 +19,36 @@ const urlApiUsers = "https://reqres.in/api/users?delay=3";
 
 const getUsersList = async () => {
     try{
-        const response = await fetch(urlApiUsers);
-        const responseJson = await response.json();
-        getTableUsers(responseJson.data);
-        saveLocalStorage("userData", responseJson.data);
+        const dataLocalStorage = localStorage.getItem("userData"); 
+        const dataLocalObj = JSON.parse(dataLocalStorage); 
+        console.log(new Date(dataLocalObj.timeLimit));
+        console.log(new Date);
+        const currentTime = Date.now();
+        const differenceInTime = currentTime - dataLocalObj.timeLimit; 
+        const differenceInSec = differenceInTime / 1000;    
+        const differenceInMin = differenceInSec / 60;
+
+        
+        
+        if(dataLocalObj){
+            if(differenceInMin>1){
+                const response = await fetch(urlApiUsers);
+                const responseJson = await response.json();
+                getTableUsers(responseJson.data);
+                saveLocalStorage("userData", responseJson.data);
+            }else{
+                getTableUsers(dataLocalObj.value);  
+            }
+            
+        }else{
+            const response = await fetch(urlApiUsers);
+            const responseJson = await response.json();
+            getTableUsers(responseJson.data);
+            saveLocalStorage("userData", responseJson.data);
+        }
+
+
+        
         
     } catch(error){
         console.warn(error);
@@ -67,8 +92,4 @@ function getTableUsers (responseData){
     });
   }
   
-
-
-  getUsersList();
-
 
