@@ -21,14 +21,11 @@ const getUsersList = async () => {
     try{
         const dataLocalStorage = localStorage.getItem("userData"); 
         const dataLocalObj = JSON.parse(dataLocalStorage); 
-        console.log(new Date(dataLocalObj.timeLimit));
-        console.log(new Date);
         const currentTime = Date.now();
         const differenceInTime = currentTime - dataLocalObj.timeLimit; 
         const differenceInSec = differenceInTime / 1000;    
         const differenceInMin = differenceInSec / 60;
 
-        
         
         if(dataLocalObj){
             if(differenceInMin>1){
