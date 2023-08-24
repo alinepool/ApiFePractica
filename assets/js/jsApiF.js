@@ -5,8 +5,6 @@ update.addEventListener("click", () => {
     getUsersList();
 });
 
-
-
 const saveLocalStorage = (key, value) => {
     const timeLimit = Date.now(); 
     const dataNow = { value, timeLimit};
@@ -50,6 +48,7 @@ const getUsersList = async () => {
     } catch(error){
         console.warn(error);
     }
+    
 };
 
 
